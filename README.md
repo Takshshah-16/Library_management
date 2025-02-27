@@ -7,8 +7,6 @@
 
 This project demonstrates the implementation of a Library Management System using SQL. It includes creating and managing tables, performing CRUD operations, and executing advanced SQL queries. The goal is to showcase skills in database design, manipulation, and querying.
 
-![Library_project](https://github.com/najirh/Library-System-Management---P2/blob/main/library.jpg)
-
 ## Objectives
 
 1. **Set up the Library Management System Database**: Create and populate the database with tables for branches, employees, members, books, issued status, and return status.
@@ -466,10 +464,6 @@ WHERE isbn = '978-0-375-41398-8'
 
 ```
 
-
-
-
-
 ## Reports
 
 - **Database Schema**: Detailed table structures and relationships.
@@ -486,10 +480,3 @@ This project demonstrates the application of SQL skills in creating and managing
 2. **Run the Queries**: Use the SQL queries in the `analysis_queries.sql` file to perform the analysis.
 3. **Explore and Modify**: Customize the queries as needed to explore different aspects of the data or answer additional questions.
 
-
-- **YouTube**: [Subscribe to my channel for tutorials and insights](https://www.youtube.com/@zero_analyst)
-- **Instagram**: [Follow me for daily tips and updates](https://www.instagram.com/zero_analyst/)
-- **LinkedIn**: [Connect with me professionally](https://www.linkedin.com/in/najirr)
-- **Discord**: [Join our community for learning and collaboration](https://discord.gg/36h5f2Z5PK)
-
-Thank you for your interest in this project!
