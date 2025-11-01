@@ -7,9 +7,9 @@ load_dotenv()
 
 def get_db_connection():
     conn = psycopg2.connect(
-        host="localhost",
+        host="/tmp/postgresql",
         database="library_db",
-        user=os.getenv("USER", "postgres"),
+        user=os.getenv("USER", "runner"),
         password=""
     )
     return conn
@@ -17,8 +17,9 @@ def get_db_connection():
 def create_database():
     try:
         conn = psycopg2.connect(
-            host="localhost",
-            user=os.getenv("USER", "postgres"),
+            host="/tmp/postgresql",
+            database="postgres",
+            user=os.getenv("USER", "runner"),
             password=""
         )
         conn.autocommit = True

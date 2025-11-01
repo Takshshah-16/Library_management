@@ -8,9 +8,9 @@ load_dotenv()
 def get_db_connection():
     try:
         conn = psycopg2.connect(
-            host="localhost",
+            host="/tmp/postgresql",
             database="library_db",
-            user=os.getenv("USER", "postgres"),
+            user=os.getenv("USER", "runner"),
             password=""
         )
         return conn
