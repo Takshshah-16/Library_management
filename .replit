@@ -1,0 +1,6 @@
+modules = ["python-3.11", "postgresql-17"]
+[agent]
+expertMode = true
+
+[nix]
+channel = "stable-25_05"
