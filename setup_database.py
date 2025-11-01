@@ -140,20 +140,26 @@ def load_csv_data():
             with open(csv_file, 'r', encoding='utf-8') as f:
                 reader = csv.reader(f)
                 headers = next(reader)
+                rows_inserted = 0
+                rows_skipped = 0
                 
                 for row in reader:
-                    placeholders = ','.join(['%s'] * len(row))
+                    cleaned_row = [None if (val.upper() == 'NULL' or val == '') else val for val in row]
+                    placeholders = ','.join(['%s'] * len(cleaned_row))
                     columns = ','.join(headers)
                     query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
                     try:
-                        cur.execute(query, row)
+                        cur.execute(query, cleaned_row)
+                        conn.commit()
+                        rows_inserted += 1
                     except Exception as e:
-                        print(f"Error inserting into {table}: {e}")
-                        print(f"Row: {row}")
+                        conn.rollback()
+                        rows_skipped += 1
+                        if rows_skipped <= 3:
+                            print(f"Skipping row in {table}: {e}")
                 
-                print(f"Loaded data from {csv_file}")
+                print(f"Loaded data from {csv_file}: {rows_inserted} rows inserted, {rows_skipped} rows skipped")
     
-    conn.commit()
     cur.close()
     conn.close()
 
@@ -221,10 +227,30 @@ def create_procedures():
     conn.close()
     print("Stored procedures created successfully")
 
+def fix_return_status_references():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    cur.execute("""
+        UPDATE return_status rs
+        SET return_book_isbn = ist.issued_book_isbn,
+            return_book_name = ist.issued_book_name
+        FROM issued_status ist
+        WHERE rs.issued_id = ist.issued_id
+        AND (rs.return_book_isbn IS NULL OR rs.return_book_name IS NULL)
+    """)
+    
+    rows_updated = cur.rowcount
+    conn.commit()
+    cur.close()
+    conn.close()
+    print(f"Fixed {rows_updated} return_status records with missing book references")
+
 if __name__ == "__main__":
     print("Setting up Library Management System Database...")
     create_database()
     create_tables()
     load_csv_data()
+    fix_return_status_references()
     create_procedures()
     print("\nDatabase setup completed successfully!")
